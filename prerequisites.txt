@@ -1,0 +1,6 @@
+LIBRARIES:
+ncurses
+rapidjson
+
+COMPILER
+wsl g++

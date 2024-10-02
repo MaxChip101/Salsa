@@ -1,0 +1,8 @@
+# builds
+/build
+
+# envivronment
+/.vscode
+
+# themes
+/salsa_themes
