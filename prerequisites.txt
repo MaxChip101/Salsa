@@ -3,4 +3,5 @@ ncurses
 rapidjson
 
 COMPILER
-wsl g++
+wsl (IF ON WINDOWS)
+g++
