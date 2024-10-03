@@ -2,7 +2,7 @@
     "theme": "salsa_themes/theme/dark.json",
 
     "highlights": {
-        ".cpp": "salsa_themes/highlights/cpp.json",
-        ".py": "salsa_themes/highlights/python.json"
+        "$.cpp": "salsa_themes/highlights/cpp.json",
+        "$.py": "salsa_themes/highlights/python.json"
     }
 }
