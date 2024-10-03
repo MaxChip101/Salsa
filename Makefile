@@ -3,7 +3,7 @@ CXX = g++
 
 # Directories
 SRC_DIR = src
-BUILD_DIR = build/
+BUILD_DIR = build
 
 # Source files
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
