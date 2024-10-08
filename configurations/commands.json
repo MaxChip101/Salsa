@@ -1,3 +1,6 @@
 {
-    
+    "commands": 
+    {
+        "TAB": "SPACE SPACE"
+    }
 }

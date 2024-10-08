@@ -1,11 +1,28 @@
 #include <ncurses.h>
 #include <rapidjson/document.h>
+#include <iostream>
 
-int main(int argc, char *argv[]) {
+bool on = true;
+
+int main (int argc, char *argv[])
+{
+    int line = 0;
+    char ch;
     initscr();
-    printw("Hello, World");
+    cbreak();
+    noecho();
+    //mvaddch(5, 2, 'f');
     refresh();
-    getch();
+    while (on)
+    {
+        ch = getch();
+        addch((ch));
+        line++;
+        if (ch == 27)
+        {
+            on = false;
+        }
+    }
     endwin();
-    return 0;
+	return 0;
 }

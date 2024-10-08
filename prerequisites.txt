@@ -1,7 +1,9 @@
 LIBRARIES:
 ncurses
 rapidjson
+stdlib
 
-COMPILER
+TOOLS:
 wsl (IF ON WINDOWS)
-g++
+g++/gcc
+make
