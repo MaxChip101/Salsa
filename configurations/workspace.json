@@ -5,6 +5,6 @@
     {
         ".cpp": "salsa_themes/highlights/cpp.json",
         ".py": "salsa_themes/highlights/python.json",
-        "json": "salsa_themes/highlights/json.json"
+        ".json": "salsa_themes/highlights/json.json"
     }
 }
