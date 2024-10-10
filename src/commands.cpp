@@ -1,6 +1,6 @@
-#include <ncurses.h>
+#include <string>
 #include "commands.h"
-#include <signal.h>
+
 
 bool ctrl;
 bool shift;
@@ -11,20 +11,8 @@ bool alt;
 
 namespace commands
 {
-
-    Command_Return prompt_command()
+    void exec_macro (std::string key)
     {
-        Command_Return cr;
-        cr.cmd_name = "null";
-        cr.content = "null";
-        return cr;
-    }
 
-    Command_Return macro_command()
-    {
-        Command_Return cr;
-        cr.cmd_name = "null";
-        cr.content = "null";
-        return cr;
     }
 }

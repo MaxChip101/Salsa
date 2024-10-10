@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
             ch = getch();
             
             // escape keys
-            if (ch == 27) {
+            if (ch == 27) { // escape
                 printw("(escape)");
                 on = false;
             } else if (ch == KEY_UP) {
@@ -52,25 +52,25 @@ int main (int argc, char *argv[])
                 printw("(page up)");
             } else if (ch == KEY_NPAGE) {
                 printw("(page down)");
-            } else if (ch == 265) {
+            } else if (ch == 265) { // f1
                 printw("(f1)");
-            } else if (ch == 266) {
+            } else if (ch == 266) { // f2
                 printw("(f2)");
-            } else if (ch == 267) {
+            } else if (ch == 267) { // f3
                 printw("(f3)");
-            } else if (ch == 268) {
+            } else if (ch == 268) { // f4
                 printw("(f4)");
-            } else if (ch == 269) {
+            } else if (ch == 269) { // f5
                 printw("(f5)");
-            } else if (ch == 270) {
+            } else if (ch == 270) { // f6
                 printw("(f6)");
-            } else if (ch == 271) {
+            } else if (ch == 271) { // f7
                 printw("(f7)");
-            } else if (ch == 272) {
+            } else if (ch == 272) { // f8
                 printw("(f8)");
-            } else if (ch == 273) {
+            } else if (ch == 273) { // f9
                 printw("(f9)");
-            } else if (ch == 274) {
+            } else if (ch == 274) { // f10
                 printw("(f10)");
             } else if (ch == KEY_DC) {
                 printw("(del)");
@@ -88,7 +88,7 @@ int main (int argc, char *argv[])
                 printw("(end 1)");
             } else if (ch == KEY_C3) {
                 printw("(end 2)");
-            } else {
+            } else { // other
                 addch(char(ch));
             }
         }
