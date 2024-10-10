@@ -94,7 +94,8 @@ int main (int argc, char *argv[])
         }
     endwin();
     } else {
-        std::cerr << "Your terminal does not support coloured text" << std::endl;
+        endwin();
+        std::cerr << "Your terminal does not support coloured text, In order for Salsa to work properly, you need a terminal that supports coloured text" << std::endl;
         return 1;
     }
 	return 0;
