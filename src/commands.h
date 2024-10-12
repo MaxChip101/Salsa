@@ -3,10 +3,9 @@
 
 #include <string>
 
-struct Command_Return
-{
-    std::string cmd_name;
-    std::string content;
-};
+namespace commands {
+    void load_json();
+    void exec_macro (std::string key);
+}
 
 #endif

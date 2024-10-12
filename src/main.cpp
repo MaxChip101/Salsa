@@ -4,17 +4,32 @@
 #include <unistd.h>
 #include <signal.h>
 
+#include "commands.h"
+#include "display.h"
+
 // $ Salsa file.txt
 // $ Salsa --config
 // $ Salsa -c 
 
-void force_stop(int signal) {}
+void ctrl_c(int signal)
+{
+    printw("(ctrl C)");
+    refresh();
+}
+
+void ctrl_z(int signal){
+    printw("(ctrl Z)");
+    refresh();
+}
 
 int main (int argc, char *argv[])
 {
 
-    signal(SIGINT, force_stop); // block ctrl + c force end
-    signal(SIGTSTP, force_stop); // block ctrl + z force end
+    commands::load_json();
+    commands::exec_macro("real");
+
+    signal(SIGINT, ctrl_c); // block ctrl + c force end
+    signal(SIGTSTP, ctrl_z); // block ctrl + z force end
 
     int ch;
     bool on = true;
@@ -25,13 +40,20 @@ int main (int argc, char *argv[])
     keypad(stdscr, TRUE);
     curs_set(0);
     refresh();
+
     if (has_colors()) {
         while (on)
         {
             ch = getch();
+
+            commands::exec_macro(ch);
             
-            // escape keys
-            if (ch == 27) { // escape
+
+            if (ch >= 1 && ch <= 26) // ctrl a-z
+            { 
+                printw("(ctrl %c%c", ch+64, ')');
+            }
+            else if (ch == 27) { // escape
                 printw("(escape)");
                 on = false;
             } else if (ch == KEY_UP) {
@@ -52,26 +74,8 @@ int main (int argc, char *argv[])
                 printw("(page up)");
             } else if (ch == KEY_NPAGE) {
                 printw("(page down)");
-            } else if (ch == 265) { // f1
-                printw("(f1)");
-            } else if (ch == 266) { // f2
-                printw("(f2)");
-            } else if (ch == 267) { // f3
-                printw("(f3)");
-            } else if (ch == 268) { // f4
-                printw("(f4)");
-            } else if (ch == 269) { // f5
-                printw("(f5)");
-            } else if (ch == 270) { // f6
-                printw("(f6)");
-            } else if (ch == 271) { // f7
-                printw("(f7)");
-            } else if (ch == 272) { // f8
-                printw("(f8)");
-            } else if (ch == 273) { // f9
-                printw("(f9)");
-            } else if (ch == 274) { // f10
-                printw("(f10)");
+            } else if (ch >= 265 && ch <= 274) { // f1-f10
+                printw("(f%d)", ch - 264);
             } else if (ch == KEY_DC) {
                 printw("(del)");
             } else if (ch == KEY_IC) {
