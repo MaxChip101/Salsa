@@ -1,34 +1,45 @@
 #include <ncurses.h>
+#include "display.h"
 
-int cwidth, cheight;
-char **character_display;
 
-namespace display
+Context::setup(int _width, int _height)
 {
-    void setup(int width, int height)
-    {
-        cwidth = width;
-        cheight = height;
-        for (int i = 0; i < cwidth; i++) {
-            character_display[i] = new char[cheight];
-        }
+    Context::width = _width;
+    Context::height = _height;
+    for (int i = 0; i < Context::width; i++) {
+        Context::display[i] = new char[Context::height];
     }
+}
 
-    void setChar(int line, int char_pos, char character)
+Context::setChar(int _col, int _row, char _ch)
+{
+    Context::display[_col][_row] = _ch;
+}
+
+Context::getChar(int _col, int _row)
+{
+    if(_col <= Context::width && _col >= 0 && _row <= Context::height && _row >= 0)
     {
-        character_display[char_pos][char_pos] = character;
+        return Context::display[_col, _row];
     }
+}
 
-    void draw()
+Context::getRenderedChar(int _col, int _row)
+{
+    if(_col <= Context::width && _col >= 0 && _row <= Context::height && _row >= 0)
     {
-        clear();
-        for (int x = 0; x < cwidth; x++)
+        return mvinch(_row, _col);
+    }
+}
+
+Context::render()
+{
+    clear();
+    for (int x = 0; x < Context::width; x++)
+    {
+        for (int y = 0; y < Context::height; y++)
         {
-            for (int y = 0; y < cheight; y++)
-            {
-                addch(character_display[x][y]);
-            }
+            mvaddch(y, x, Context::display[x][y]);
         }
     }
-
 }

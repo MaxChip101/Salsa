@@ -26,6 +26,7 @@ rapidjson::Document getjson (const char *file)
         exit(1);
     }
 
+    // checking if file is closed
     if (!jsonfile.is_open()) {
         std::cerr << "Cannot open json file: '" << file << "'" << std::endl;
         exit(1);
