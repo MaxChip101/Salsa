@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <signal.h>
 
-#include "commands.h"
 #include "display.h"
 
 // $ Salsa file.txt
@@ -24,10 +23,6 @@ void ctrl_z(int signal){
 
 int main (int argc, char *argv[])
 {
-
-    commands::load_json();
-    commands::exec_macro("real");
-
     signal(SIGINT, ctrl_c); // block ctrl + c force end
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
 
@@ -45,9 +40,6 @@ int main (int argc, char *argv[])
         while (on)
         {
             ch = getch();
-
-            commands::exec_macro(ch);
-            
 
             if (ch >= 1 && ch <= 26) // ctrl a-z
             { 

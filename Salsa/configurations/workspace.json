@@ -1,13 +1,6 @@
 {
-    "theme":  "salsa_themes/theme/dark.json",
-
-    "width":  "20",
-    "height": "20",
-
-    "highlights": 
+    "plugins":
     {
-        ".cpp": "salsa_themes/highlights/cpp.json",
-        ".py":  "salsa_themes/highlights/python.json",
-        ".json": "salsa_themes/highlights/json.json"
+        "1": "plugins/salsa_default"
     }
 }
