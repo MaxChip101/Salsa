@@ -5,9 +5,9 @@
 #include "display.h"
 #include "plugins.h"
 
-Context getContext(void)
+Context* getContext(void)
 {
-    return new Context;
+    return new Context();
 }
 
 

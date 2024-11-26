@@ -24,7 +24,7 @@ public:
     void setup(int _width, int _height);
     void setChar(int _col, int _row, char _ch);
     char getChar(int _col, int _row);
-    char getRenderedChar(int _col, int _row)
+    char getRenderedChar(int _col, int _row);
     void render();
 };
 

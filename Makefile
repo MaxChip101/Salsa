@@ -1,41 +1,44 @@
 # Compiler
 CXX = g++
+CXX_WIN = x86_64-w64-mingw32-g++
 
 # Directories
 SRC_DIR = src
-BUILD_64_DIR = build/m64
-BUILD_32_DIR = build/m32
+BUILD_DEBUG_DIR = build/debug
+BUILD_LINUX_DIR = build/linux
 
 # Source files
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
-# Executable name
-EXEC = salsa
+# Executable names
+EXEC_LINUX = salsa
 
 # Flags
 CXXFLAGS = -Wall -std=c++17 -lncurses
 
-# Build 64-bit binary
-m64: CXXFLAGS += -m64
-m64: $(BUILD_DIR)/x86_64/$(EXEC)
+# Debug Flags
+DEBUGFLAGS = -fsanitize=address
 
-# Build 32-bit binary
-m32: CXXFLAGS += -m32
-m32: $(BUILD_DIR)/x86/$(EXEC)
+# Default rule
+all: linux
 
-# Compile 64-bit executable
-$(BUILD_DIR)/x86_64/$(EXEC): $(SOURCES)
-	@mkdir -p $(BUILD_DIR)/x86_64
+# Linux build
+linux: $(BUILD_LINUX_DIR)/$(EXEC_LINUX)
+
+$(BUILD_LINUX_DIR)/$(EXEC_LINUX): $(SOURCES)
+	@mkdir -p $(BUILD_LINUX_DIR)
 	$(CXX) $(CXXFLAGS) $(SOURCES) -o $@
 
-# Compile 32-bit executable
-$(BUILD_DIR)/x86/$(EXEC): $(SOURCES)
-	@mkdir -p $(BUILD_DIR)/x86
-	$(CXX) $(CXXFLAGS) $(SOURCES) -o $@
+# Debug build
+debug: $(BUILD_DEBUG_DIR)/$(EXEC_LINUX)
+
+$(BUILD_DEBUG_DIR)/$(EXEC_LINUX): $(SOURCES)
+	@mkdir -p $(BUILD_DEBUG_DIR)
+	$(CXX) $(DEBUGFLAGS) $(CXXFLAGS) $(SOURCES) -o $@
 
 # Clean up the build directories
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_LINUX_DIR)/$(EXEC_LINUX) $(BUILD_LINUX2_DIR)/$(EXEC_WINDOWS)
 
 # Make sure nothing else runs if the Makefile targets are up-to-date
-.PHONY: all clean m64 m32
+.PHONY: all clean linux debug

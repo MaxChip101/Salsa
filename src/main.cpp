@@ -13,13 +13,11 @@
 
 void ctrl_c(int signal)
 {
-    printw("(ctrl C)");
-    refresh();
+    send_key("CTRL_C");
 }
 
 void ctrl_z(int signal){
-    printw("(ctrl Z)");
-    refresh();
+    send_key("CTRL_Z");
 }
 
 int main (int argc, char *argv[])
@@ -45,12 +43,12 @@ int main (int argc, char *argv[])
 
             if (ch >= 1 && ch <= 26) // ctrl a-z
             {
-                send_key("CTRL_%c", ch+64);
+                send_key("CTRL_" + char(ch+64));
             }
             else if (ch == 27) // escape
             {
                 send_key("ESCAPE");
-                on = false;
+                on = false; // temporary but a failsave
             }
             else if (ch == KEY_UP)
             {
@@ -90,7 +88,7 @@ int main (int argc, char *argv[])
             }
             else if (ch >= 265 && ch <= 274) // f1-f10
             {
-                send_key("F%d", ch - 264);
+                send_key("F" + char(ch - 264));
             }
             else if (ch == KEY_DC)
             {
@@ -126,7 +124,7 @@ int main (int argc, char *argv[])
             }
             else // other
             { 
-                send_key(char(ch));
+                send_key(ch + "");
             }
         }
     endwin();
