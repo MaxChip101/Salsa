@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <signal.h>
+#include <string>
 
 #include "display.h"
 #include "plugins.h"
@@ -14,10 +15,12 @@
 void ctrl_c(int signal)
 {
     send_key("CTRL_C");
+    refresh();
 }
 
 void ctrl_z(int signal){
     send_key("CTRL_Z");
+    refresh();
 }
 
 int main (int argc, char *argv[])
@@ -25,8 +28,8 @@ int main (int argc, char *argv[])
     signal(SIGINT, ctrl_c); // block ctrl + c force end
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
 
-    int ch;
     bool on = true;
+    int ch = 0;
 
     initscr();
     cbreak();
@@ -35,20 +38,137 @@ int main (int argc, char *argv[])
     curs_set(0);
     refresh();
 
+    //load_plugins("");
+
     if (has_colors()) {
         while (on)
         {
-            // input
             ch = getch();
-
-            if (ch >= 1 && ch <= 26) // ctrl a-z
+            
+            if (ch == 0) // ctrl @
             {
-                send_key("CTRL_" + char(ch+64));
+                send_key("CTRL_@");
             }
-            else if (ch == 27) // escape
+            else if (ch == 1) // ctrl A
+            {
+                send_key("CTRL_A");
+            }
+            else if (ch == 2) // ctrl B
+            {
+                send_key("CTRL_B");
+            }
+            else if (ch == 3) // ctrl C
+            {
+                send_key("CTRL_C");
+            }
+            else if (ch == 4) // ctrl D
+            {
+                send_key("CTRL_D");
+            }
+            else if (ch == 5) // ctrl E
+            {
+                send_key("CTRL_E");
+            }
+            else if (ch == 6) // ctrl F
+            {
+                send_key("CTRL_F");
+            }
+            else if (ch == 7) // ctrl G
+            {
+                send_key("CTRL_G");
+            }
+            else if (ch == 8) // ctrl H
+            {
+                send_key("CTRL_H");
+            }
+            else if (ch == 9) // tab / ctrl I
+            {
+                send_key("TAB");
+            }
+            else if (ch == 10) // ctrl J & M
+            {
+                send_key("CTRL_JM");
+            }
+            else if (ch == 11) // ctrl K
+            {
+                send_key("CTRL_K");
+            }
+            else if (ch == 12) // ctrl L
+            {
+                send_key("CTRL_L");
+            }
+            else if (ch == 14) // ctrl N
+            {
+                send_key("CTRL_N");
+            }
+            else if (ch == 15) // ctrl O
+            {
+                send_key("CTRL_O");
+            }
+            else if (ch == 16) // ctrl P
+            {
+                send_key("CTRL_P");
+            }
+            else if (ch == 17) // ctrl Q
+            {
+                send_key("CTRL_Q");
+            }
+            else if (ch == 18) // ctrl R
+            {
+                send_key("CTRL_R");
+            }
+            else if (ch == 19) // ctrl S
+            {
+                send_key("CTRL_S");
+            }
+            else if (ch == 20) // ctrl T
+            {
+                send_key("CTRL_T");
+            }
+            else if (ch == 21) // ctrl U
+            {
+                send_key("CTRL_U");
+            }
+            else if (ch == 22) // ctrl V
+            {
+                send_key("CTRL_V");
+            }
+            else if (ch == 23) // ctrl W
+            {
+                send_key("CTRL_W");
+            }
+            else if (ch == 24) // ctrl X
+            {
+                send_key("CTRL_X");
+            }
+            else if (ch == 25) // ctrl Y
+            {
+                send_key("CTRL_Y");
+            }
+            else if (ch == 26) // ctrl Z
+            {
+                send_key("CTRL_Z");
+            }
+            else if (ch == 27) // escape / ctrl [
             {
                 send_key("ESCAPE");
-                on = false; // temporary but a failsave
+                on = false;
+            }
+            else if (ch == 28) // ctrl "\"
+            {
+                send_key("CTRL_\\");
+            }
+            else if (ch == 29) // ctrl ]
+            {
+                send_key("CTRL_]");
+            }
+            else if (ch == 30) // ctrl ^
+            {
+                send_key("CTRL_^");
+            }
+            else if (ch == 31) // ctrl _
+            {
+                send_key("CTRL__");
             }
             else if (ch == KEY_UP)
             {
@@ -86,11 +206,7 @@ int main (int argc, char *argv[])
             {
                 send_key("PAGE_DOWN");
             }
-            else if (ch >= 265 && ch <= 274) // f1-f10
-            {
-                send_key("F" + char(ch - 264));
-            }
-            else if (ch == KEY_DC)
+            else if (ch == KEY_DC || ch == 127)
             {
                 send_key("DELETE");
             }
@@ -122,13 +238,23 @@ int main (int argc, char *argv[])
             {
                 send_key("END_2");
             }
-            else // other
-            { 
-                send_key(ch + "");
+            else if (ch >= 32 && ch <= 126) // other
+            {
+                char _str[2];
+                _str[0] = ch;
+                _str[1] = '\0';
+                send_key(_str);
             }
+            else
+            {
+                printw("UNKNOWN KEY: %d", ch);
+            }
+            flushinp();
         }
-    endwin();
-    } else {
+        endwin();
+    }
+    else
+    {
         endwin();
         std::cerr << "Your terminal does not support coloured text, In order for Salsa to work properly, you need a terminal that supports coloured text" << std::endl;
         return 1;

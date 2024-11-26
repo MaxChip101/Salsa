@@ -16,10 +16,12 @@ struct Salsa_Plugin
     void (*end)(void);
 };
 
+void load_plugins(const std::string& plugin_dir);
 void end_plugins();
 void send_key(const char* text);
 
 Context* getContext(void);
+void destroyContext(Context* context);
 
 #ifdef __cplusplus
 }

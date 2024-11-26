@@ -2,12 +2,19 @@
 #include <filesystem>
 #include <vector>
 #include <dlfcn.h>
+#include <ncurses.h>
+#include <string>
 #include "display.h"
 #include "plugins.h"
 
 Context* getContext(void)
 {
     return new Context();
+}
+
+void destroyContext(Context* context)
+{
+    delete context;
 }
 
 
@@ -20,7 +27,7 @@ std::vector<Loaded_Plugin> loaded_plugins;
 
 void load_plugins(const std::string& plugin_dir) {
 
-    for (const auto& entry : std::filesystem::directory_iterator(plugin_dir)) {
+    for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(plugin_dir)) {
 
         if (entry.is_regular_file() && entry.path().extension() == ".so") {
 
@@ -36,7 +43,7 @@ void load_plugins(const std::string& plugin_dir) {
             dlerror(); // Clear any existing errors
 
             // Load the plugin symbol
-            auto* plugin = (Salsa_Plugin*)dlsym(handle, "plugin");
+            Salsa_Plugin* plugin = (Salsa_Plugin*)dlsym(handle, "plugin");
             char* error = dlerror();
             if (error) {
                 std::cerr << "Failed to load symbol 'plugin' in " << plugin_path << ": " << error << std::endl;
@@ -55,14 +62,14 @@ void load_plugins(const std::string& plugin_dir) {
 }
 
 void plugin_update() {
-    for (const auto& entry : loaded_plugins)
+    for (const Loaded_Plugin& entry : loaded_plugins)
     {
         entry.plugin->update();
     }
 }
 
 void end_plugins() {
-    for (const auto& entry : loaded_plugins)
+    for (const Loaded_Plugin& entry : loaded_plugins)
     {
         entry.plugin->end();
         dlclose(entry.handle);
@@ -72,7 +79,8 @@ void end_plugins() {
 
 void send_key(const char* text)
 {
-    for (const auto& entry : loaded_plugins)
+    printw(text);
+    for (const Loaded_Plugin& entry : loaded_plugins)
     {
         entry.plugin->input(text);
     }
