@@ -7,7 +7,8 @@
 extern "C" {
 #endif
 
-typedef struct Salsa_Plugin {
+typedef struct Salsa_Plugin
+{
     const char* name;
     void (*init)(void);
     void (*update)(void);
@@ -15,9 +16,10 @@ typedef struct Salsa_Plugin {
     void (*end)(void);
 };
 
-Context getContext(void);
+void end_plugins();
+void send_key(const char* text);
 
-int getnum(void);
+Context getContext(void);
 
 #ifdef __cplusplus
 }

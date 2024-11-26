@@ -5,11 +5,6 @@
 #include "display.h"
 #include "plugins.h"
 
-int getnum(void)
-{
-    return 4;
-}
-
 Context getContext(void)
 {
     return new Context;
@@ -60,15 +55,25 @@ void load_plugins(const std::string& plugin_dir) {
 }
 
 void plugin_update() {
-    for (const auto& entry : loaded_plugins) {
+    for (const auto& entry : loaded_plugins)
+    {
         entry.plugin->update();
     }
 }
 
 void end_plugins() {
-    for (const auto& entry : loaded_plugins) {
+    for (const auto& entry : loaded_plugins)
+    {
         entry.plugin->end();
         dlclose(entry.handle);
     }
     loaded_plugins.clear();
+}
+
+void send_key(const char* text)
+{
+    for (const auto& entry : loaded_plugins)
+    {
+        entry.plugin->input(text);
+    }
 }

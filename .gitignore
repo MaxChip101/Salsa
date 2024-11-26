@@ -4,9 +4,9 @@
 # envivronment
 /.vscode
 
-# themes
-/salsa_themes
-
 # other
 /examples
 /lookup
+
+# not yet made
+/Salsa

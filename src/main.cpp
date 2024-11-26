@@ -5,6 +5,7 @@
 #include <signal.h>
 
 #include "display.h"
+#include "plugins.h"
 
 // $ Salsa file.txt
 // $ Salsa --config
@@ -39,53 +40,93 @@ int main (int argc, char *argv[])
     if (has_colors()) {
         while (on)
         {
+            // input
             ch = getch();
 
             if (ch >= 1 && ch <= 26) // ctrl a-z
-            { 
-                printw("(ctrl %c%c", ch+64, ')');
+            {
+                send_key("CTRL_%c", ch+64);
             }
-            else if (ch == 27) { // escape
-                printw("(escape)");
+            else if (ch == 27) // escape
+            {
+                send_key("ESCAPE");
                 on = false;
-            } else if (ch == KEY_UP) {
-                printw("(up)");
-            } else if (ch == KEY_DOWN) {
-                printw("(down)");
-            } else if (ch == KEY_LEFT) {
-                printw("(left)");
-            } else if (ch == KEY_RIGHT) {
-                printw("(right)");
-            } else if (ch == KEY_BACKSPACE) {
-                printw("(backspace)");
-            } else if (ch == KEY_HOME) {
-                printw("(home)");
-            } else if (ch == KEY_END) {
-                printw("(end)");
-            } else if (ch == KEY_PPAGE) {
-                printw("(page up)");
-            } else if (ch == KEY_NPAGE) {
-                printw("(page down)");
-            } else if (ch >= 265 && ch <= 274) { // f1-f10
-                printw("(f%d)", ch - 264);
-            } else if (ch == KEY_DC) {
-                printw("(del)");
-            } else if (ch == KEY_IC) {
-                printw("(insert)");
-            } else if (ch == KEY_SF) {
-                printw("(scroll down)");
-            } else if (ch == KEY_SR) {
-                printw("(scroll up)");
-            } else if (ch == KEY_A1) {
-                printw("(home 1)");
-            } else if (ch == KEY_A3) {
-                printw("(home 2)");
-            } else if (ch == KEY_C1) {
-                printw("(end 1)");
-            } else if (ch == KEY_C3) {
-                printw("(end 2)");
-            } else { // other
-                addch(char(ch));
+            }
+            else if (ch == KEY_UP)
+            {
+                send_key("UP");
+            }
+            else if (ch == KEY_DOWN)
+            {
+                send_key("DOWN");
+            }
+            else if (ch == KEY_LEFT)
+            {
+                send_key("LEFT");
+            }
+            else if (ch == KEY_RIGHT)
+            {
+                send_key("RIGHT");
+            }
+            else if (ch == KEY_BACKSPACE)
+            {
+                send_key("BACKSPACE");
+            }
+            else if (ch == KEY_HOME)
+            {
+                send_key("HOME");
+            }
+            else if (ch == KEY_END)
+            {
+                send_key("END");
+            }
+            else if (ch == KEY_PPAGE)
+            {
+                send_key("PAGE_UP");
+            }
+            else if (ch == KEY_NPAGE)
+            {
+                send_key("PAGE_DOWN");
+            }
+            else if (ch >= 265 && ch <= 274) // f1-f10
+            {
+                send_key("F%d", ch - 264);
+            }
+            else if (ch == KEY_DC)
+            {
+                send_key("DELETE");
+            }
+            else if (ch == KEY_IC)
+            {
+                send_key("INSERT");
+            }
+            else if (ch == KEY_SF)
+            {
+                send_key("SCROLL_DOWN");
+            }
+            else if (ch == KEY_SR)
+            {
+                send_key("SCROLL_UP");
+            }
+            else if (ch == KEY_A1)
+            {
+                send_key("HOME_1");
+            }
+            else if (ch == KEY_A3)
+            {
+                send_key("HOME_2");
+            }
+            else if (ch == KEY_C1)
+            {
+                send_key("END_1");
+            }
+            else if (ch == KEY_C3)
+            {
+                send_key("END_2");
+            }
+            else // other
+            { 
+                send_key(char(ch));
             }
         }
     endwin();
