@@ -4,84 +4,46 @@
 #include <dlfcn.h>
 #include <ncurses.h>
 #include <string>
+#include <cstring>
 #include "display.h"
 #include "plugins.h"
+#include "salsa_plugin.h"
 
 Context* getContext(void)
 {
-    return new Context();
+    
 }
 
-void destroyContext(Context* context)
+void update_plugins()
 {
-    delete context;
+
+}
+
+void end_plugins()
+{
+    
 }
 
 
-struct Loaded_Plugin {
-    Salsa_Plugin* plugin;
-    void* handle;
-};
+void send_key(std::string text, Context context)
+{
+    for (size_t i = 0; i < text.size(); i++)
+    {
+        
+        if(text[i] == '\0' && i+4 <= text.size())
+        {
+            std::cout << "utf" << std::endl;
+            char _str[4] = {text[i+1], text[i+2], text[i+3], text[i+4]};
+            i+=4;
+            context.setChar(i, 0, std::string(_str));
 
-std::vector<Loaded_Plugin> loaded_plugins;
-
-void load_plugins(const std::string& plugin_dir) {
-
-    for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(plugin_dir)) {
-
-        if (entry.is_regular_file() && entry.path().extension() == ".so") {
-
-            const std::string plugin_path = entry.path().string();
-
-            // Load the plugin
-            void* handle = dlopen(plugin_path.c_str(), RTLD_LAZY);
-            if (!handle) {
-                std::cerr << "Failed to load " << plugin_path << ": " << dlerror() << std::endl;
-                continue;
-            }
-
-            dlerror(); // Clear any existing errors
-
-            // Load the plugin symbol
-            Salsa_Plugin* plugin = (Salsa_Plugin*)dlsym(handle, "plugin");
-            char* error = dlerror();
-            if (error) {
-                std::cerr << "Failed to load symbol 'plugin' in " << plugin_path << ": " << error << std::endl;
-                dlclose(handle);
-                continue;
-            }
-
-            // Store the plugin and its handle
-            loaded_plugins.push_back({plugin, handle});
-
-            // Initialize the plugin
-            plugin->init();
-            std::cout << "Loaded plugin: " << plugin->name << std::endl;
+        }
+        else
+        {
+            std::cout << "ascii" << std::endl;
+            context.setChar(i, 0, std::string(1, text[i]));
         }
     }
-}
-
-void plugin_update() {
-    for (const Loaded_Plugin& entry : loaded_plugins)
-    {
-        entry.plugin->update();
-    }
-}
-
-void end_plugins() {
-    for (const Loaded_Plugin& entry : loaded_plugins)
-    {
-        entry.plugin->end();
-        dlclose(entry.handle);
-    }
-    loaded_plugins.clear();
-}
-
-void send_key(const char* text)
-{
-    printw(text);
-    for (const Loaded_Plugin& entry : loaded_plugins)
-    {
-        entry.plugin->input(text);
-    }
+    context.render();
+    //printw(text); 
 }

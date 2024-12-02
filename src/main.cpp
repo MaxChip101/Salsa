@@ -2,8 +2,8 @@
 #include <rapidjson/document.h>
 #include <iostream>
 #include <unistd.h>
+#include <locale.h>
 #include <signal.h>
-#include <string>
 
 #include "display.h"
 #include "plugins.h"
@@ -12,15 +12,25 @@
 // $ Salsa --config
 // $ Salsa -c 
 
+Context context;
+bool ready = false;
+
 void ctrl_c(int signal)
 {
-    send_key("CTRL_C");
-    refresh();
+    if(ready)
+    {
+        send_key("CTRL_C 😀", context);
+        //refresh();
+    }
 }
 
-void ctrl_z(int signal){
-    send_key("CTRL_Z");
-    refresh();
+void ctrl_z(int signal)
+{
+    if(ready)
+    {
+        send_key("CTRL_Z", context);
+        //refresh();
+    }
 }
 
 int main (int argc, char *argv[])
@@ -31,20 +41,34 @@ int main (int argc, char *argv[])
     bool on = true;
     int ch = 0;
 
+    setlocale(LC_ALL, "en_US.UTF-8");
     initscr();
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
     curs_set(0);
     refresh();
+    
+    context.setup(20,20);
 
     //load_plugins("");
 
     if (has_colors()) {
+        ready = true;
+        context.setChar(0, 0, "h");
+        context.setChar(1, 0, "😀");
+        context.setChar(0, 1, " ");
+        context.setChar(1, 1, "~");
+        context.setChar(2, 1, "_");
+        context.setChar(3, 1, "~");
+        context.setChar(4, 1, "X");
+        context.setChar(5, 1, "~");
+        context.setChar(6, 1, "@");
+        context.render();
         while (on)
         {
             ch = getch();
-            
+            /*
             if (ch == 0) // ctrl @
             {
                 send_key("CTRL_@");
@@ -56,10 +80,6 @@ int main (int argc, char *argv[])
             else if (ch == 2) // ctrl B
             {
                 send_key("CTRL_B");
-            }
-            else if (ch == 3) // ctrl C
-            {
-                send_key("CTRL_C");
             }
             else if (ch == 4) // ctrl D
             {
@@ -145,15 +165,13 @@ int main (int argc, char *argv[])
             {
                 send_key("CTRL_Y");
             }
-            else if (ch == 26) // ctrl Z
+            */
+            /*else*/ if (ch == 27) // escape / ctrl [
             {
-                send_key("CTRL_Z");
-            }
-            else if (ch == 27) // escape / ctrl [
-            {
-                send_key("ESCAPE");
+                send_key("ESCAPE", context);
                 on = false;
             }
+            /*
             else if (ch == 28) // ctrl "\"
             {
                 send_key("CTRL_\\");
@@ -238,12 +256,12 @@ int main (int argc, char *argv[])
             {
                 send_key("END_2");
             }
-            else if (ch >= 32 && ch <= 126) // other
+            else */ if (ch >= 32 && ch <= 126) // other
             {
-                char _str[2];
-                _str[0] = ch;
-                _str[1] = '\0';
-                send_key(_str);
+                char _str[4] = {char(ch), '\0', '\0', '\0'};
+                context.setChar(0, 0, _str);
+                //send_key(_str);
+                context.render();
             }
             else
             {

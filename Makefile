@@ -14,7 +14,7 @@ SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 EXEC_LINUX = salsa
 
 # Flags
-CXXFLAGS = -Wall -std=c++17 -lncurses
+CXXFLAGS = -Wall -std=c++17 -lncursesw
 
 # Debug Flags
 DEBUGFLAGS = -fsanitize=address
