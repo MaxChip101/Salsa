@@ -19,8 +19,8 @@ void ctrl_c(int signal)
 {
     if(ready)
     {
-        send_key("CTRL_C 😀", context);
-        //refresh();
+        send_key("CTRL_C");
+        context.render();
     }
 }
 
@@ -28,8 +28,8 @@ void ctrl_z(int signal)
 {
     if(ready)
     {
-        send_key("CTRL_Z", context);
-        //refresh();
+        send_key("CTRL_Z");
+        context.render();
     }
 }
 
@@ -55,20 +55,11 @@ int main (int argc, char *argv[])
 
     if (has_colors()) {
         ready = true;
-        context.setChar(0, 0, "h");
-        context.setChar(1, 0, "😀");
-        context.setChar(0, 1, " ");
-        context.setChar(1, 1, "~");
-        context.setChar(2, 1, "_");
-        context.setChar(3, 1, "~");
-        context.setChar(4, 1, "X");
-        context.setChar(5, 1, "~");
-        context.setChar(6, 1, "@");
-        context.render();
+
         while (on)
         {
             ch = getch();
-            /*
+
             if (ch == 0) // ctrl @
             {
                 send_key("CTRL_@");
@@ -165,13 +156,11 @@ int main (int argc, char *argv[])
             {
                 send_key("CTRL_Y");
             }
-            */
-            /*else*/ if (ch == 27) // escape / ctrl [
+            if (ch == 27) // escape / ctrl [
             {
-                send_key("ESCAPE", context);
+                send_key("ESCAPE");
                 on = false;
             }
-            /*
             else if (ch == 28) // ctrl "\"
             {
                 send_key("CTRL_\\");
@@ -256,18 +245,18 @@ int main (int argc, char *argv[])
             {
                 send_key("END_2");
             }
-            else */ if (ch >= 32 && ch <= 126) // other
+            else if (ch >= 32 && ch <= 126) // other
             {
-                char _str[4] = {char(ch), '\0', '\0', '\0'};
+                std::string _str = std::string(1, char(ch));
                 context.setChar(0, 0, _str);
-                //send_key(_str);
-                context.render();
+                send_key(_str);
             }
             else
             {
                 printw("UNKNOWN KEY: %d", ch);
             }
             flushinp();
+            context.render();
         }
         endwin();
     }

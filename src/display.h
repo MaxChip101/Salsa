@@ -31,6 +31,7 @@ public:
 
     void setup(int _width, int _height);
     void setChar(int _col, int _row, std::string _ch);
+    void setStr(int _col, int _row, std::string _str);
     std::string getChar(int _col, int _row);
     //char getRenderedChar(int _col, int _row);
     void render();

@@ -10,7 +10,7 @@ extern "C" {
 
 void load_plugins();
 void end_plugins();
-void send_key(std::string text, Context context);
+void send_key(std::string text);
 
 Context* getContext(void);
 
