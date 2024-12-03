@@ -3,22 +3,16 @@
 
 #include <string>
 
-struct char4
-{
-
-};
-
-
-class Context
+class Display_Context
 {
 public:
     int width, height;
     std::string **display;
 
     // Constructor to initialize the display
-    Context() : width(0), height(0), display(nullptr) {}
+    Display_Context() : width(0), height(0), display(nullptr) {}
 
-    ~Context() 
+    ~Display_Context() 
     {
         if (display != nullptr) {
             for (int i = 0; i < width; i++) {
@@ -37,6 +31,6 @@ public:
     void render();
 };
 
-extern Context* current_context;
+extern Display_Context* current_context;
 
 #endif

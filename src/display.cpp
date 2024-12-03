@@ -2,27 +2,27 @@
 #include <string>
 #include "display.h"
 
-void Context::setup(int _width, int _height)
+void Display_Context::setup(int _width, int _height)
 {
-    Context::width = _width;
-    Context::height = _height;
+    Display_Context::width = _width;
+    Display_Context::height = _height;
 
-    Context::display = new std::string*[height];
+    Display_Context::display = new std::string*[height];
     for (int i = 0; i < height; i++)
     {
-        Context::display[i] = new std::string[width];
+        Display_Context::display[i] = new std::string[width];
     }
 }
 
-void Context::setChar(int _col, int _row, std::string _ch)
+void Display_Context::setChar(int _col, int _row, std::string _ch)
 {
-    if(_col < Context::width && _col >= 0 && _row < Context::height && _row >= 0)
+    if(_col < Display_Context::width && _col >= 0 && _row < Display_Context::height && _row >= 0)
     {
-        Context::display[_row][_col] = _ch;
+        Display_Context::display[_row][_col] = _ch;
     }
 }
 
-void Context::setStr(int _col, int _row, std::string _str)
+void Display_Context::setStr(int _col, int _row, std::string _str)
 {
     size_t i = 0;
     while (i < _str.size())
@@ -54,19 +54,19 @@ void Context::setStr(int _col, int _row, std::string _str)
         }
 
         std::string ch = _str.substr(i, char_len);
-        Context::setChar(_col + i, _row, ch);
+        Display_Context::setChar(_col + i, _row, ch);
 
         i += char_len;
     }
 }
 
-std::string Context::getChar(int _col, int _row)
+std::string Display_Context::getChar(int _col, int _row)
 {
-    if(_col < Context::width && _col >= 0 && _row < Context::height && _row >= 0)
+    if(_col < Display_Context::width && _col >= 0 && _row < Display_Context::height && _row >= 0)
     {
-        return Context::display[_col][_row];
+        return Display_Context::display[_col][_row];
     }
-    return "\0\0\0\0";
+    return "\0";
 }
 /*
 char Context::getRenderedChar(int _col, int _row)
@@ -78,16 +78,16 @@ char Context::getRenderedChar(int _col, int _row)
     return -1;
 }
 */
-void Context::render()
+void Display_Context::render()
 {
     clear();
-    for (int x = 0; x < Context::width; x++)
+    for (int x = 0; x < Display_Context::width; x++)
     {
-        for (int y = 0; y < Context::height; y++)
+        for (int y = 0; y < Display_Context::height; y++)
         {
-            if (!Context::display[y][x].empty())
+            if (!Display_Context::display[y][x].empty())
             {
-                mvprintw(y, x, Context::display[y][x].c_str());
+                mvprintw(y, x, Display_Context::display[y][x].c_str());
             }
         }
     }

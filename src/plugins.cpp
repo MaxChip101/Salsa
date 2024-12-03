@@ -9,9 +9,14 @@
 #include "plugins.h"
 #include "salsa_plugin.h"
 
-Context* getContext(void)
+Display_Context* getContext(void)
 {
     
+}
+
+void load_plugins()
+{
+
 }
 
 void update_plugins()

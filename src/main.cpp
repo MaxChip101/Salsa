@@ -12,7 +12,7 @@
 // $ Salsa --config
 // $ Salsa -c 
 
-Context context;
+Display_Context context;
 bool ready = false;
 
 void ctrl_c(int signal)
