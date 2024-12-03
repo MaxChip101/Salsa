@@ -5,7 +5,7 @@ CXX_WIN = x86_64-w64-mingw32-g++
 # Directories
 SRC_DIR = src
 BUILD_DEBUG_DIR = build/debug
-BUILD_LINUX_DIR = build/linux
+BUILD_LINUX_DIR = build/
 
 # Source files
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
