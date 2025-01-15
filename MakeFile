@@ -1,0 +1,11 @@
+CC := gcc
+
+SOURCE := src/main.c
+LIBS := libs
+
+EXEC := bin/salsac
+
+SOURCE_FILES := $(wildcard $(SOURCE))
+
+main:
+    $(CC) 
