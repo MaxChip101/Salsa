@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
+
 
 int start_input()
 {
@@ -20,7 +20,7 @@ char get_key()
     }
     else
     {
-        return('\0');
+        return(-1);
     }
 }
 
