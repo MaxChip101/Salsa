@@ -1,8 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-int start_input();
+int enable_raw_mode();
 char get_key();
-int end_input();
+int disable_raw_mode();
 
 #endif
