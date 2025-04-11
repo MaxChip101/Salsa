@@ -37,8 +37,6 @@ int main() {
     int posx = 0;
     int posy = 0;
 
-    printf(" %i,%i", width, height);
-
     while(on) {
         char key = get_key();
         if(key == 27) { // escape

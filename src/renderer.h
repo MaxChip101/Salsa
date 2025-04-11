@@ -20,7 +20,6 @@ typedef struct {
 } Display;
 
 typedef struct {
-
     int x1;
     int y1;
     int x2;
@@ -29,7 +28,7 @@ typedef struct {
 } Widget;
 
 int setup(Display* display, int width, int height);
-int set_cell(Display* display, int x, int y, char* cell);
+int set_cell(Display* display, int x, int y, Cell cell);
 int render(Display* display);
 int destroy(Display* display);
 void create_buffer();
