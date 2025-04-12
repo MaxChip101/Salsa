@@ -1,9 +1,10 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include "utf8.h"
+
 typedef struct {
-    char* value;
-    int size;
+    UTF8 value;
     int x;
     int y;
 } Cell;
@@ -27,7 +28,7 @@ typedef struct {
     int z_layer;
 } Widget;
 
-int setup(Display* display, int width, int height);
+Display setup(int width, int height);
 int set_cell(Display* display, int x, int y, Cell cell);
 int render(Display* display);
 int destroy(Display* display);

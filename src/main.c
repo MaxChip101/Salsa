@@ -5,14 +5,18 @@
 #include <sys/ioctl.h>
 #include "input.h"
 #include "renderer.h"
+#include "utf8.h"
 
-void ctrl_c() {
+volatile sig_atomic_t running = 1;
+
+void ctrl_c(int) {
 
 }
 
-void ctrl_z() {
+void ctrl_z(int) {
 
 }
+
 
 void get_terminal_size(int *width, int *height) {
     struct winsize w;
@@ -27,8 +31,7 @@ int main() {
     int width, height;
     get_terminal_size(&width, &height);
     height-=1;
-    Display display;
-    setup(&display, width, height);
+    Display display = setup(width, height);
     enable_raw_mode();
     create_buffer();
 
@@ -45,9 +48,9 @@ int main() {
             posx = 0;
             posy++;
         } else if(posx < width) {
-            char* _str = {(char*) key};
-            set_cell(&display, posx, posy, _str);
- 
+            Cell cell = {char_to_utf8(key), posx, posy};
+            set_cell(&display, posx, posy, cell);
+            posx++;
         }
         render(&display);
     }
