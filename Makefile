@@ -12,7 +12,7 @@ OBJECTS_LINUX = $(SOURCES:$(SRC_DIR)/%.c=$(BUILD_LINUX_DIR)/%.o)
 OBJECTS_DEBUG = $(SOURCES:$(SRC_DIR)/%.c=$(BUILD_DEBUG_DIR)/%.o)
 
 # Executable names
-EXEC_LINUX = salsac
+EXEC_LINUX = salsa
 
 # Flags
 CFLAGS = -Wall -Wextra -I$(SRC_DIR)
