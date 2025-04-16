@@ -1,13 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+
 #include "input.h"
 #include "renderer.h"
 #include "utf8.h"
-
-volatile sig_atomic_t running = 1;
+#include "log.h"
 
 void ctrl_c(int) {
 
@@ -34,13 +35,17 @@ int main() {
     Display display = setup(width, height);
     enable_raw_mode();
     create_buffer();
+    log_initiate();
 
     int on = 1;
 
     int posx = 0;
     int posy = 0;
 
+    printf("w:%i, h:%i", width, height);
+
     while(on) {
+        render(&display);
         char key = get_key();
         if(key == 27) { // escape
             on = 0; // exit
@@ -48,14 +53,22 @@ int main() {
             posx = 0;
             posy++;
         } else if(posx < width) {
+            
             Cell cell = {char_to_utf8(key), posx, posy};
             set_cell(&display, posx, posy, cell);
+            
+            char* string;
+            asprintf(&string, "x:%d, y:%d, w:%d, h:%d\n", posx, posy, width, height);
+            log_write(string);
+            free(string);
+            string = NULL;
+            
             posx++;
         }
-        render(&display);
     }
     original_buffer();
     disable_raw_mode();
     destroy(&display);
+    log_end();
     return 0;
 }
