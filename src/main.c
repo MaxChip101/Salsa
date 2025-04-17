@@ -31,7 +31,7 @@ int main() {
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
     int width, height;
     get_terminal_size(&width, &height);
-    height-=1;
+    disable_cursor();
     Display display = setup(width, height);
     enable_raw_mode();
     create_buffer();
@@ -42,14 +42,12 @@ int main() {
     int posx = 0;
     int posy = 0;
 
-    printf("w:%i, h:%i", width, height);
-
     while(on) {
         render(&display);
         char key = get_key();
         if(key == 27) { // escape
             on = 0; // exit
-        } if(key == '\n' && posy < height - 1) {
+        } if(key == '\n' && posy < height) {
             posx = 0;
             posy++;
         } else if(posx < width) {
@@ -69,6 +67,7 @@ int main() {
     original_buffer();
     disable_raw_mode();
     destroy(&display);
+    endable_cursor();
     log_end();
     return 0;
 }

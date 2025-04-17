@@ -6,6 +6,10 @@
 
 #define create_buffer() (printf("\033[?1049h"))
 #define original_buffer() (printf("\033[?1049l"))
+#define reset_cursor() ( printf("\033[H"))
+
+#define disable_cursor() (printf("\033[?25l"))
+#define endable_cursor() (printf("\033[?25h"))
 
 typedef struct {
     UTF8 value;
