@@ -35,7 +35,14 @@ int main() {
     Display display = setup(width, height);
     enable_raw_mode();
     create_buffer();
-    log_initiate();
+    if(log_initiate() == 1) {
+        original_buffer();
+        disable_raw_mode();
+        destroy(&display);
+        endable_cursor();
+        printf("salsa: failed to initialize logger\n");
+        return 1;
+    }
 
     int on = 1;
 
@@ -56,8 +63,8 @@ int main() {
             set_cell(&display, posx, posy, cell);
             
             char* string;
-            asprintf(&string, "x:%d, y:%d, w:%d, h:%d\n", posx, posy, width, height);
-            log_write(string);
+            asprintf(&string, "x:%d, y:%d, w:%d, h:%d", posx, posy, width, height);
+            log_write(string, "INFO", "main.c");
             free(string);
             string = NULL;
             

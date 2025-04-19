@@ -3,8 +3,8 @@ CC = gcc
 
 # Directories
 SRC_DIR = src
-BUILD_DEBUG_DIR = build/debug
-BUILD_LINUX_DIR = build
+BUILD_DEBUG_DIR = bin/debug
+BUILD_LINUX_DIR = bin
 
 # Source files
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
