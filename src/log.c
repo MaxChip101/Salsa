@@ -8,12 +8,11 @@
 
 #include "log.h"
 
-FILE* log_file;
-
+char* path;
 
 int log_initiate() {
-    char* name = calloc(PATH_MAX, sizeof(char));
-    if (name == NULL) {
+    path = calloc(PATH_MAX, sizeof(char));
+    if (path == NULL) {
         return 1;
     }
 
@@ -23,11 +22,10 @@ int log_initiate() {
     mkdir("/tmp/salsa/log", 0777);
 
     struct tm* time_info = localtime(&now);
-    sprintf(name, "/tmp/salsa/log/salsa-%i-%02d-%02d_%02d-%02d-%02d.log", 1900 + time_info->tm_year, time_info->tm_mon + 1, 
+    sprintf(path, "/tmp/salsa/log/salsa-%i-%02d-%02d_%02d-%02d-%02d.log", 1900 + time_info->tm_year, time_info->tm_mon + 1, 
         time_info->tm_mday, time_info->tm_hour, time_info->tm_min, time_info->tm_sec);
-    log_file = fopen(name, "a");
-    
-    free(name);
+        FILE* log_file = fopen(path, "w");
+    fclose(log_file);
     return 0;
 }
 
@@ -35,12 +33,14 @@ int log_write(char* message, char* level, char* source) {
     time_t now = time(NULL);
     struct tm* time_info = localtime(&now);
 
+    FILE* log_file = fopen(path, "a");
     fprintf(log_file, "[%i-%02d-%02d %02d:%02d:%02d] [%s] [%s]\t%s\n", 1900 + time_info->tm_year, time_info->tm_mon + 1, 
         time_info->tm_mday, time_info->tm_hour, time_info->tm_min, time_info->tm_sec, level, source, message);
+    fclose(log_file);
     return 0;
 }
 
 int log_end() {
-    fclose(log_file);
+    free(path);
     return 0;
 }
