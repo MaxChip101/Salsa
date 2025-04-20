@@ -48,16 +48,14 @@ int main() {
         return 1;
     }
 
-    int on = 1;
-
     int posx = 0;
     int posy = 0;
 
-    while(on) {
+    while(1) {
         render(&display);
         char key = get_key();
         if(key == 27) { // escape
-            on = 0; // exit
+            break; // exit
         } if(key == '\n' && posy < height) {
             posx = 0;
             posy++;
