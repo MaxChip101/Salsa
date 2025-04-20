@@ -10,6 +10,7 @@
 
 FILE* log_file;
 
+
 int log_initiate() {
     char* name = calloc(PATH_MAX, sizeof(char));
     if (name == NULL) {
@@ -18,15 +19,8 @@ int log_initiate() {
 
     time_t now = time(NULL);
 
-    struct stat sb;
-
-    if(stat("/tmp/salsa", &sb) != 0 && S_ISDIR(sb.st_mode)) {
-        mkdir("/tmp/salsa", 0777);
-    }
-    
-    if(stat("/tmp/salsa/log", &sb) != 0 && S_ISDIR(sb.st_mode)) {
-        mkdir("/tmp/salsa/log", 0777);
-    }
+    mkdir("/tmp/salsa", 0777);
+    mkdir("/tmp/salsa/log", 0777);
 
     struct tm* time_info = localtime(&now);
     sprintf(name, "/tmp/salsa/log/salsa-%i-%02d-%02d_%02d-%02d-%02d.log", 1900 + time_info->tm_year, time_info->tm_mon + 1, 

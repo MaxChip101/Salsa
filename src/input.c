@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <termios.h>
+#include <wchar.h>
 
 
 int enable_raw_mode() {
@@ -18,7 +19,7 @@ char get_key() {
     }
     else
     {
-        return '\0';
+        return L'\0';
     }
 }
 

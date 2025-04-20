@@ -3,11 +3,11 @@
 #include <signal.h>
 #include <string.h>
 #include <unistd.h>
+#include <locale.h>
 #include <sys/ioctl.h>
 
 #include "input.h"
 #include "renderer.h"
-#include "utf8.h"
 #include "log.h"
 
 void ctrl_c(int) {
@@ -29,6 +29,10 @@ void get_terminal_size(int *width, int *height) {
 int main() {
     signal(SIGINT, ctrl_c); // block ctrl + c force end
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
+    if (setlocale(LC_ALL, "") == NULL) {
+        fprintf(stderr, "Error setting locale.\n");
+        return 1;
+    }
     int width, height;
     get_terminal_size(&width, &height);
     disable_cursor();
@@ -59,7 +63,7 @@ int main() {
             posy++;
         } else if(posx < width) {
             
-            Cell cell = {char_to_utf8(key), posx, posy};
+            Cell cell = {(wchar_t)key, posx, posy};
             set_cell(&display, posx, posy, cell);
             
             char* string;

@@ -1,8 +1,8 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "utf8.h"
 #include <stdio.h>
+#include <wchar.h>
 
 #define create_buffer() (printf("\033[?1049h"))
 #define original_buffer() (printf("\033[?1049l"))
@@ -12,7 +12,7 @@
 #define endable_cursor() (printf("\033[?25h"))
 
 typedef struct {
-    UTF8 value;
+    wchar_t value;
     int x;
     int y;
 } Cell;
@@ -20,10 +20,6 @@ typedef struct {
 typedef struct {
     Cell* cells;
     int size;
-} CellArray;
-
-typedef struct {
-    CellArray buffer;
     int width;
     int height;
 } Display;
