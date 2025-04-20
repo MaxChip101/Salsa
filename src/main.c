@@ -30,7 +30,7 @@ int main() {
     signal(SIGINT, ctrl_c); // block ctrl + c force end
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
     if (setlocale(LC_ALL, "") == NULL) {
-        fprintf(stderr, "Error setting locale.\n");
+        fprintf(stderr, "salsa: error setting locale.\n");
         return 1;
     }
     int width, height;

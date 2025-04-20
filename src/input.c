@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include <termios.h>
-#include <wchar.h>
 
 
 int enable_raw_mode() {

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <wchar.h>
 #include "renderer.h"
 
 #define create_buffer() (printf("\033[?1049h"))
