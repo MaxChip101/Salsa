@@ -5,7 +5,6 @@
 
 #define create_buffer() (printf("\033[?1049h"))
 #define original_buffer() (printf("\033[?1049l"))
-#define reset_cursor() ( printf("\033[H"))
 
 Display setup(int width, int height) {
     int size = width * height;
@@ -39,10 +38,27 @@ int render(Display* display) {
                 printf(" ");
                 continue;
             }
-            printf("%lc", display->cells[x + y * display->width].value);
+            Cell cell = display->cells[x + y * display->width];
+            // 1(bold) 3(italic) 4(underline) 5(blink) 7(reverse) 9(strike)
+            // \033[attributes;38;2;r;g;b;48;2;r;g;bm
+            printf("\033[%s%s%s%s%s%s38;2;%d;%d;%d;48;2;%d;%d;%dm%lc\033[0m",
+                ((cell.attributes & ATTRIBUTE_BOLD) == ATTRIBUTE_BOLD) ? "1;" : "",
+                ((cell.attributes & ATTRIBUTE_ITALIC) == ATTRIBUTE_ITALIC) ? "3;" : "",
+                ((cell.attributes & ATTRIBUTE_UNDERLINE) == ATTRIBUTE_UNDERLINE) ? "4;" : "",
+                ((cell.attributes & ATTRIBUTE_BLINK) == ATTRIBUTE_BLINK) ? "5;" : "",
+                ((cell.attributes & ATTRIBUTE_REVERSE) == ATTRIBUTE_REVERSE) ? "7;" : "",
+                ((cell.attributes & ATTRIBUTE_STRIKE) == ATTRIBUTE_STRIKE) ? "9;" : "",
+                cell.fg.r,
+                cell.fg.g,
+                cell.fg.b,
+                cell.bg.r,
+                cell.bg.g,
+                cell.bg.b,
+                cell.value
+            );
         }
         if (y < display->height - 1) {
-            printf("%c", '\n');
+            printf("\n");
         }
     }
     fflush(stdout);
