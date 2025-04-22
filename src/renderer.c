@@ -14,10 +14,6 @@ Display setup(int width, int height) {
         return err;
     }
 
-    for(int i = 0; i < size; i++) {
-        cells[i].value = L'~';
-    }
-
     Display display = {cells, size, width, height};
     return display;
 }
