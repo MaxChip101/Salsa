@@ -30,8 +30,6 @@ typedef struct {
     Color bg;
     Color fg;
     uint8_t attributes;
-    int x;
-    int y;
 } Cell;
 
 typedef struct {

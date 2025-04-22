@@ -10,5 +10,6 @@ int get_configurations() {
     mkdir(config_path, 0777);
     sprintf(config_path, "%s/.config/salsa", home_path);
     mkdir(config_path, 0777);
-
+    free(config_path);
+    config_path = NULL;
 }

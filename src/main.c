@@ -61,10 +61,7 @@ int main() {
             posx = 0;
             posy++;
         } else if(posx < width) {
-            
-            Color fg = {0, 0, 0};
-            Color bg = {(int)((float)posx/(float)width * 255), (int)((float)posx/(float)width * 255), (int)((float)posx/(float)width * 255)};
-            Cell cell = {(wchar_t)key, bg, fg, ATTRIBUTE_BOLD, posx, posy};
+            Cell cell = {(wchar_t)key, {0,0,0}, {255,255,255}, ATTRIBUTE_BOLD};
             set_cell(&display, posx, posy, cell);
             
             char* string;
