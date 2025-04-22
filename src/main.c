@@ -59,7 +59,7 @@ int main() {
             
             Color fg = {255, 255, 0};
             Color bg = {255, 0, 0};
-            Cell cell = {(wchar_t)key, fg, bg, ATTRIBUTE_BOLD, posx, posy};
+            Cell cell = {(wchar_t)key, bg, fg, ATTRIBUTE_BOLD, posx, posy};
             set_cell(&display, posx, posy, cell);
             
             char* string;
