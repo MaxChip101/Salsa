@@ -2,23 +2,23 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/stat.h>
 #include <linux/limits.h>
+#include <sys/stat.h>
 
 #include "log.h"
 
 char* path;
 
 int log_initiate() {
+    mkdir("/tmp/salsa", 0777);
+    mkdir("/tmp/salsa/log", 0777);
+    
     path = calloc(PATH_MAX, sizeof(char));
     if (path == NULL) {
         return 1;
     }
 
     time_t now = time(NULL);
-
-    mkdir("/tmp/salsa", 0777);
-    mkdir("/tmp/salsa/log", 0777);
 
     struct tm* time_info = localtime(&now);
     sprintf(path, "/tmp/salsa/log/salsa-%i-%02d-%02d_%02d-%02d-%02d.log", 1900 + time_info->tm_year, time_info->tm_mon + 1, 

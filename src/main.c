@@ -6,9 +6,11 @@
 #include <locale.h>
 #include <sys/ioctl.h>
 
+
 #include "input.h"
 #include "renderer.h"
 #include "log.h"
+#include "configs.h"
 
 void ctrl_c(int) {
 
@@ -29,6 +31,9 @@ void get_terminal_size(int *width, int *height) {
 int main() {
     signal(SIGINT, ctrl_c); // block ctrl + c force end
     signal(SIGTSTP, ctrl_z); // block ctrl + z force end
+
+    get_configurations();
+
     int width, height;
     get_terminal_size(&width, &height);
     disable_cursor();
@@ -57,8 +62,8 @@ int main() {
             posy++;
         } else if(posx < width) {
             
-            Color fg = {255, 255, 0};
-            Color bg = {255, 0, 0};
+            Color fg = {0, 0, 0};
+            Color bg = {(int)((float)posx/(float)width * 255), (int)((float)posx/(float)width * 255), (int)((float)posx/(float)width * 255)};
             Cell cell = {(wchar_t)key, bg, fg, ATTRIBUTE_BOLD, posx, posy};
             set_cell(&display, posx, posy, cell);
             

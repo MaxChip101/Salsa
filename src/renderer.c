@@ -14,6 +14,11 @@ Display setup(int width, int height) {
         return err;
     }
 
+    for(int i = 0; i < size; i++) {
+        Cell cell = {L' ', {(int)(((float)(i % width)/(float)size) * 255), (int)(((float)i/(float)size) * 255), (int)(((float)i/(float)size) * 255)}, {0, 0, 0}, ATTRIBUTE_BOLD, 0, 0};
+        cells[i] = cell;
+    }
+
     Display display = {cells, size, width, height};
     return display;
 }
