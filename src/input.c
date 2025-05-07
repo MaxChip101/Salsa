@@ -1,5 +1,9 @@
 #include <unistd.h>
 #include <termios.h>
+#include <stdio.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/select.h>
 
 
 int enable_raw_mode() {
@@ -19,6 +23,24 @@ char get_key() {
     else
     {
         return L'\0';
+    }
+}
+
+char next_key(int timeout) {
+    struct timeval tv;
+    fd_set fds;
+    tv.tv_sec = 0;
+    tv.tv_usec = timeout;
+
+    FD_ZERO(&fds);
+    FD_SET(STDIN_FILENO, &fds);
+
+    if(select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0) {
+        char c;
+        read(STDIN_FILENO, &c, 1);
+        return c;
+    } else {
+        return '\0';
     }
 }
 
