@@ -43,10 +43,11 @@ typedef struct {
     int y2;
     int z_layer;
 } Widget;
+
 // create focused widget
 typedef struct {
     Widget* widgets;
-    int size;
+    int widget_count;
     int width;
     int height;
 } Display;

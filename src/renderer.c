@@ -8,6 +8,11 @@
 
 int last_widget_id = 1;
 
+Display create_display(int width, int height) {
+    Display display = {calloc(1, sizeof(Widget)), 0, width, height};
+    return display;
+}
+
 Widget create_widget(int x1, int y1, int x2, int y2, int z_layer) {
     int size = x2 * y2 ;
     Cell* cells = calloc(size, sizeof(Cell));
@@ -25,22 +30,30 @@ int set_cell(Widget* widget, int x, int y, Cell cell) {
     if(x < 0 || x >= widget->x2 - widget->x1 || y < 0 || y >= widget->y2 - widget->y1) {
         return 1;
     }
-    widget->cells[x + y * (widget.x2 - widget->x1)] = cell;
+    widget->cells[x + y * (widget->x2 - widget->x1)] = cell;
     return 0;
 }
 
 Cell get_cell(Widget widget, int x, int y) {
-    if(x < 0 || x >= widget->x2 - widget->x1 || y < 0 || y >= widget->y2 - widget->y1) {
+    if(x < 0 || x >= widget.x2 - widget.x1 || y < 0 || y >= widget.y2 - widget.y1) {
         Cell err = {L'\0', {0,0,0}, {0,0,0}, 0};
         return err;
     }
-    return display->cells[x + y * (widget->x2 - widget->x1)];
+    return widget.cells[x + y * (widget.x2 - widget.x1)];
 }
 
 
 // TODO: optimize later to use write()
 int render_display(Display display) {
     reset_cursor();
+
+    for (int i = 0; i < display.widget_count; i++) {
+        // make it so that the cells from all widgets combine and get printed all at once
+        // try to cache values to make it not waste resources
+    }
+
+
+    /*
     for(int y = 0; y < display->height; y++) {
         for(int x = 0; x < display->width; x++) {
             if(display->cells[x + y * display->width].value == 0) {
@@ -70,6 +83,7 @@ int render_display(Display display) {
             printf("\n");
         }
     }
+        */
     fflush(stdout);
 
     return 0;
@@ -79,13 +93,55 @@ int render_display(Display display) {
 // create new widget pointer that inserts the widget in the proper position
 // returns 0 for success, returns 1 for any memory errors
 int add_widget(Display* display, Widget widget) {
-    
+    Widget* new_widgets = malloc((display->widget_count + 1) * sizeof(Widget));
+    if(new_widgets == NULL) {
+        return 1;
+    }
+
+    int found = 0;
+    int index = 0;
+    for(int i = 0; i < display->widget_count + 1; i++) {
+        if ((display->widgets[i].z_layer == widget.z_layer || i == display->widget_count + 1) && !found) {
+            found = 1;
+            new_widgets[i] = widget;
+            continue;
+        } else {
+            new_widgets[i] = display->widgets[index];
+            index++;
+        }
+    }
+    free(display->widgets);
+    display->widgets = new_widgets;
+    return 0;
 }
 
 // finds the widget and creates a new pointer that does not include the widget
 // returns 0 for success, returns 1 for any memory errors, returns 2 if it does not exist
 int remove_widget(Display* display, Widget widget) {
+    Widget* new_widgets = malloc((display->widget_count - 1) * sizeof(Widget));
+    if(new_widgets == NULL) {
+        return 1;
+    }
 
+    int found = 0;
+    int index = 0;
+    for(int i = 0; i < display->widget_count; i++) {
+        if(display->widgets[i].id != widget.id) {
+            new_widgets[index] = display->widgets[i];
+        } else {
+            found = 1;
+        }
+    }
+
+    if (found == 0) {
+        free(new_widgets);
+        new_widgets = NULL;
+        return 2;
+    }
+
+    free(display->widgets);
+    display->widgets = new_widgets;
+    return 0;
 }
 
 int destroy_widget(Widget* widget) {
