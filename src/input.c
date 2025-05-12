@@ -5,8 +5,8 @@
 #include <sys/types.h>
 #include <sys/select.h>
 
-
-int enable_raw_mode() {
+int enable_raw_mode()
+{
     struct termios raw;
     tcgetattr(STDIN_FILENO, &raw);
     raw.c_lflag &= ~(ICANON | ECHO);
@@ -14,9 +14,10 @@ int enable_raw_mode() {
     return 0;
 }
 
-char get_key() {
+char get_key()
+{
     char c;
-    if(read(STDIN_FILENO, &c, 1) == 1)
+    if (read(STDIN_FILENO, &c, 1) == 1)
     {
         return c;
     }
@@ -26,7 +27,8 @@ char get_key() {
     }
 }
 
-char next_key(int timeout) {
+char next_key(int timeout)
+{
     struct timeval tv;
     fd_set fds;
     tv.tv_sec = 0;
@@ -35,16 +37,20 @@ char next_key(int timeout) {
     FD_ZERO(&fds);
     FD_SET(STDIN_FILENO, &fds);
 
-    if(select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0) {
+    if (select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv) > 0)
+    {
         char c;
         read(STDIN_FILENO, &c, 1);
         return c;
-    } else {
+    }
+    else
+    {
         return '\0';
     }
 }
 
-int disable_raw_mode() {
+int disable_raw_mode()
+{
     struct termios raw;
     tcgetattr(STDIN_FILENO, &raw);
     raw.c_lflag |= (ICANON | ECHO);
