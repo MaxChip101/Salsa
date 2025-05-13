@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
 #include "renderer.h"
 #include "log.h"
 
@@ -8,6 +10,14 @@
 #define original_buffer() (printf("\033[?1049l"))
 
 int last_widget_id = 1;
+
+void get_terminal_size(int *width, int *height)
+{
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    *width = w.ws_col;
+    *height = w.ws_row;
+}
 
 Display create_display(int width, int height)
 {
@@ -28,6 +38,14 @@ Widget create_widget(int x1, int y1, int x2, int y2, int z_layer)
     Widget widget = {cells, size, last_widget_id, x1, y1, x2, y2, z_layer};
     last_widget_id++;
     return widget;
+}
+
+void resize_display(Display *display, int new_width, int new_height)
+{
+}
+
+void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2, int new_y2)
+{
 }
 
 int set_cell(Widget *widget, int x, int y, Cell cell)

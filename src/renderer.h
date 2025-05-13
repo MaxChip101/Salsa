@@ -57,8 +57,11 @@ typedef struct
     int height;
 } Display;
 
+void get_terminal_size(int *width, int *height);
 Display create_display(int width, int height);
 Widget create_widget(int x1, int y1, int x2, int y2, int z_layer);
+void resize_display(Display *display, int new_width, int new_height);
+void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2, int new_y2);
 int set_cell(Widget *widget, int x, int y, Cell cell);
 Cell get_cell(Widget widget, int x, int y);
 int render_display(Display display);

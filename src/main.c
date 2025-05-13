@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <string.h>
 #include <unistd.h>
 #include <locale.h>
-#include <sys/ioctl.h>
 #include <wchar.h>
 
 #include "input.h"
@@ -12,26 +10,9 @@
 #include "log.h"
 #include "configs.h"
 
-void ctrl_c(int)
-{
-}
-
-void ctrl_z(int)
-{
-}
-
-void get_terminal_size(int *width, int *height)
-{
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    *width = w.ws_col;
-    *height = w.ws_row;
-}
-
 int main()
 {
-    signal(SIGINT, ctrl_c);  // block ctrl + c force end
-    signal(SIGTSTP, ctrl_z); // block ctrl + z force end
+    block_interupts();
     if (log_initiate() == 1)
     {
         printf("salsa: failed to initialize logger\n");
@@ -109,12 +90,11 @@ int main()
 
             posx++;
         }
-        Cell cursor = {L'~', {255, 255, 255}, {20, 0, 0}, ATTRIBUTE_BOLD | ATTRIBUTE_BLINK};
-        set_cell(&test, posx, posy, cursor);
     }
     original_buffer();
     disable_raw_mode();
     destroy_widget(&test);
+    destroy_display(&display);
     endable_cursor();
     log_end();
     return 0;

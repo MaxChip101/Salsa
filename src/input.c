@@ -4,6 +4,21 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/select.h>
+#include <signal.h>
+
+void interupt(int)
+{
+}
+
+void stop(int)
+{
+}
+
+void block_interupts()
+{
+    signal(SIGINT, interupt);
+    signal(SIGTSTP, stop);
+}
 
 int enable_raw_mode()
 {
