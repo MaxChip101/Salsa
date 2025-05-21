@@ -42,7 +42,10 @@ Widget create_widget(int x1, int y1, int x2, int y2, int z_layer) {
 void resize_display(Display *display, int new_width, int new_height) {}
 
 void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2,
-                   int new_y2) {}
+                   int new_y2) {
+  int size = (new_x2 - new_x1) * (new_y2 - new_y1);
+  realloc(widget->cells, size);
+}
 
 int set_cell(Widget *widget, int x, int y, Cell cell) {
   if (x < 0 || x >= widget->x2 - widget->x1 || y < 0 ||
