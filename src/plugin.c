@@ -1,4 +1,7 @@
+#include <sys/socket.h>
+#include <netinet/in.h>
 #include "plugin.h"
+
 
 void send_data(Plugin plugin, char* data) {}
 
