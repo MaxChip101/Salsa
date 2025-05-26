@@ -12,7 +12,7 @@
 
 int main() {
   block_interupts();
-  if (log_initiate() == 1) {
+  if (log_initiate()) {
     printf("salsa: failed to initialize logger\n");
     return 1;
   }
@@ -41,7 +41,7 @@ int main() {
     return 1;
   }
 
-  if (add_widget(&display, test);) {
+  if (add_widget(&display, test)) {
     LOG_ERROR("failed to add widget to display");
     printf("salsa: failed to add widget to display\n");
     return 1;
