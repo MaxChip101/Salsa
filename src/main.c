@@ -22,7 +22,12 @@ int main() {
   int width, height;
   get_terminal_size(&width, &height);
   Display display = create_display(width, height);
-  if () disable_cursor();
+  if (display.sucessful == 0) {
+    LOG_ERROR("failed to initialize display");
+    printf("salsa: failed to initialize display\n");
+    return 1;
+  }
+  disable_cursor();
   enable_raw_mode();
   create_buffer();
 
@@ -30,7 +35,17 @@ int main() {
   int posy = 0;
 
   Widget test = create_widget(0, 0, width / 2, height, 0);
-  add_widget(&display, test);
+  if (test.sucessful == 0) {
+    LOG_ERROR("failed to initialize widget");
+    printf("salsa: failed to initialize widget\n");
+    return 1;
+  }
+
+  if (add_widget(&display, test);) {
+    LOG_ERROR("failed to add widget to display");
+    printf("salsa: failed to add widget to display\n");
+    return 1;
+  }
 
   while (1) {
     render_display(display);
