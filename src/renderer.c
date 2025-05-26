@@ -21,8 +21,18 @@ void get_terminal_size(int *width, int *height) {
 }
 
 Display create_display(int width, int height) {
-  Display display = {calloc(1, sizeof(Widget)),
-                     calloc(width * height, sizeof(Cell)), 1, width, height};
+  int size = width * height;
+  Widget *widgets = calloc(1, sizeof(Widget));
+  if (widgets == NULL) {
+    Display err = {NULL, NULL, 0, 0, 0, 0};
+    return err;
+  }
+  Cell *cells = calloc(size, sizeof(Cell));
+  if (cells == NULL) {
+    Display err = {NULL, NULL, 0, 0, 0, 0};
+    return err;
+  }
+  Display display = {widgets, cells, 1, width, height, 1};
   return display;
 }
 
@@ -30,20 +40,22 @@ Widget create_widget(int x1, int y1, int x2, int y2, int z_layer) {
   int size = (x2 - x1) * (y2 - y1);
   Cell *cells = calloc(size, sizeof(Cell));
   if (cells == NULL) {
-    Widget err = {NULL, 0, 0, 0, 0, 0, 0, 0};
+    Widget err = {NULL, 0, 0, 0, 0, 0, 0, 0, 0};
     return err;
   }
 
-  Widget widget = {cells, size, last_widget_id, x1, y1, x2, y2, z_layer};
+  Widget widget = {cells, size, last_widget_id, x1, y1, x2, y2, z_layer, 1};
   last_widget_id++;
   return widget;
 }
 
 void resize_display(Display *display, int new_width, int new_height) {
-    int size = new_width * new_height;
-    display->width = new_width;
-    display->height = new_height;
-    display->rendered_cells = realloc(display->rendered_cells, size * sizeof(Cell));
+  int size = new_width * new_height;
+  display->width = new_width;
+  display->height = new_height;
+  display->rendered_cells =
+      realloc(display->rendered_cells, size * sizeof(Cell));
+  display
 }
 
 void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2,
@@ -69,7 +81,7 @@ int set_cell(Widget *widget, int x, int y, Cell cell) {
 Cell get_cell(Widget widget, int x, int y) {
   if (x < 0 || x >= widget.x2 - widget.x1 || y < 0 ||
       y >= widget.y2 - widget.y1) {
-    Cell err = {L'\0', {0, 0, 0}, {0, 0, 0}, 0};
+    Cell err = {L'\0', {0, 0, 0}, {0, 0, 0}, 0, 0};
     return err;
   }
   return widget.cells[x + y * (widget.x2 - widget.x1)];
@@ -80,13 +92,12 @@ int render_display(Display display) {
   reset_cursor();
 
   for (int i = 0; i < display.width * display.height; i++) {
-    Cell cell = {L'\0', {0, 0, 0}, {0, 0, 0}, 0};
+    Cell cell = {L'\0', {0, 0, 0}, {0, 0, 0}, 0, 1};
     display.rendered_cells[i] = cell;
   }
 
   for (int i = display.widget_count; i >= 0; i--) {
     Widget widget = display.widgets[i];
-    LOG_INFO("found widget");
     for (int x = 0; x < widget.x2 - widget.x1; x++) {
       for (int y = 0; y < widget.y2 - widget.y1; y++) {
         if (display.rendered_cells[x + y * (display.width)].value == 0) {

@@ -31,6 +31,7 @@ typedef struct {
   Color bg;
   Color fg;
   uint8_t attributes;
+  uint8_t succesful;
 } Cell;
 
 typedef struct {
@@ -42,6 +43,7 @@ typedef struct {
   int x2;
   int y2;
   int z_layer;
+  uint8_t sucessful;
 } Widget;
 
 // create focused widget
@@ -51,6 +53,7 @@ typedef struct {
   int widget_count;
   int width;
   int height;
+  uint8_t sucessful;
 } Display;
 
 void get_terminal_size(int *width, int *height);

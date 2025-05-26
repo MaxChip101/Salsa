@@ -22,7 +22,7 @@ int main() {
   int width, height;
   get_terminal_size(&width, &height);
   Display display = create_display(width, height);
-  disable_cursor();
+  if () disable_cursor();
   enable_raw_mode();
   create_buffer();
 
