@@ -49,23 +49,32 @@ Widget create_widget(int x1, int y1, int x2, int y2, int z_layer) {
   return widget;
 }
 
-void resize_display(Display *display, int new_width, int new_height) {
+int resize_display(Display *display, int new_width, int new_height) {
   int size = new_width * new_height;
+  Cell *cells = realloc(display->rendered_cells, size * sizeof(Cell));
+  if (cells == NULL) {
+    return 1;
+  }
   display->width = new_width;
   display->height = new_height;
-  display->rendered_cells =
-      realloc(display->rendered_cells, size * sizeof(Cell));
+  display->rendered_cells = cells;
+  return 0;
 }
 
-void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2,
-                   int new_y2) {
+int resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2,
+                  int new_y2) {
   int size = (new_x2 - new_x1) * (new_y2 - new_y1);
-  widget->cells = realloc(widget->cells, size * sizeof(Cell));
+  Cell *cells = realloc(widget->cells, size * sizeof(Cell));
+  if (cells == NULL) {
+    return 1;
+  }
+  widget->cells = cells;
   widget->x1 = new_x1;
   widget->y1 = new_y1;
   widget->x2 = new_x2;
   widget->y2 = new_y2;
   widget->size = size;
+  return 0;
 }
 
 int set_cell(Widget *widget, int x, int y, Cell cell) {

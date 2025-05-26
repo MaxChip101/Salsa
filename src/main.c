@@ -91,6 +91,16 @@ int main() {
 
       posx++;
     }
+    int new_width;
+    int new_height;
+    get_terminal_size(&new_width, &new_height);
+    if (new_width != width || new_height != height) {
+      resize_display(&display, new_width, new_height);
+      resize_widget(&test, 0, 0, new_width / 2, height);
+      width = new_width;
+      height = new_height;
+      render_display(display);
+    }
   }
   original_buffer();
   disable_raw_mode();
