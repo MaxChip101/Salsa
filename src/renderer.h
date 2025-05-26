@@ -31,7 +31,6 @@ typedef struct {
   Color bg;
   Color fg;
   uint8_t attributes;
-  uint8_t succesful;
 } Cell;
 
 typedef struct {

@@ -55,7 +55,6 @@ void resize_display(Display *display, int new_width, int new_height) {
   display->height = new_height;
   display->rendered_cells =
       realloc(display->rendered_cells, size * sizeof(Cell));
-  display
 }
 
 void resize_widget(Widget *widget, int new_x1, int new_y1, int new_x2,
@@ -81,7 +80,7 @@ int set_cell(Widget *widget, int x, int y, Cell cell) {
 Cell get_cell(Widget widget, int x, int y) {
   if (x < 0 || x >= widget.x2 - widget.x1 || y < 0 ||
       y >= widget.y2 - widget.y1) {
-    Cell err = {L'\0', {0, 0, 0}, {0, 0, 0}, 0, 0};
+    Cell err = {L'\0', {0, 0, 0}, {0, 0, 0}, 0};
     return err;
   }
   return widget.cells[x + y * (widget.x2 - widget.x1)];
@@ -92,7 +91,7 @@ int render_display(Display display) {
   reset_cursor();
 
   for (int i = 0; i < display.width * display.height; i++) {
-    Cell cell = {L'\0', {0, 0, 0}, {0, 0, 0}, 0, 1};
+    Cell cell = {L'\0', {0, 0, 0}, {0, 0, 0}, 0};
     display.rendered_cells[i] = cell;
   }
 
