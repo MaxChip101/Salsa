@@ -15,7 +15,7 @@ OBJECTS_DEBUG = $(SOURCES:$(SRC_DIR)/%.c=$(BUILD_DEBUG_DIR)/%.o)
 EXEC_LINUX = salsa
 
 # Flags
-CFLAGS = -Wall -Wextra -I$(SRC_DIR)
+CFLAGS = -Wall -Wextra -I$(SRC_DIR) -o2
 
 # Debug Flags
 DEBUGFLAGS = -fsanitize=address -g

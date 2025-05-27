@@ -30,7 +30,7 @@ typedef struct {
   wchar_t value;
   Color bg;
   Color fg;
-  uint8_t attributes;
+  uint8_t attributes;  // bitmask
 } Cell;
 
 typedef struct {
@@ -42,17 +42,17 @@ typedef struct {
   int x2;
   int y2;
   int z_layer;
-  uint8_t sucessful;
+  uint8_t sucessful;  // used for creation
 } Widget;
 
 // create focused widget
 typedef struct {
   Widget *widgets;
-  Cell *rendered_cells;
+  Cell *rendered_cells;  // save allocating memory every render
   int widget_count;
   int width;
   int height;
-  uint8_t sucessful;
+  uint8_t sucessful;  // used for creation
 } Display;
 
 void get_terminal_size(int *width, int *height);

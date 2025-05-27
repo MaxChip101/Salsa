@@ -178,7 +178,6 @@ int add_widget(Display *display, Widget widget) {
   display->widgets = new_widgets;
   return 0;
 }
-
 // finds the widget and creates a new pointer that does not include the widget
 // returns 0 for success, returns 1 for any memory errors, returns 2 if it does
 // not exist
